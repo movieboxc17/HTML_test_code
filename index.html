@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>How HTML Works</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        p {
+            max-width: 800px;
+            margin: 0 auto 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #code-area {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+        }
+        #validation-result {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>How HTML Works</h1>
+    <p>HTML (Hypertext Markup Language) is the standard markup language for creating web pages. It describes the structure of a web page using various elements or "tags." These tags are enclosed in angle brackets and typically come in pairs, with an opening tag and a closing tag.</p>
+    <p>Here's an example of a simple HTML structure:</p>
+    <pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;My Web Page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Hello, World!&lt;/h1&gt;
+    &lt;p&gt;This is a paragraph of text.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+    </pre>
+    <p>HTML tags define the content and its structure on a webpage. The &lt;!DOCTYPE&gt; declaration specifies the document type and version of HTML being used. The &lt;html&gt; tag is the root element, and the &lt;head&gt; and &lt;body&gt; tags contain metadata and the visible content of the page, respectively.</p>
+    <p>Test your HTML code:</p>
+    <textarea id="code-area"></textarea>
+    <button id="validate-button">Validate HTML</button>
+    <div id="validation-result"></div>
+    <script>
+        const codeArea = document.getElementById("code-area");
+        const validateButton = document.getElementById("validate-button");
+        const validationResult = document.getElementById("validation-result");
+
+        validateButton.addEventListener("click", () => {
+            const code = codeArea.value;
+            const apiUrl = "https://validator.w3.org/nu/";
+            
+            fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "text/html",
+                },
+                body: code,
+            })
+                .then((response) => response.text())
+                .then((data) => {
+                    if (data.includes("No errors or warnings to show.")) {
+                        validationResult.innerHTML = "<p style='color: green;'>Valid HTML code</p>";
+                    } else {
+                        validationResult.innerHTML = "<p style='color: red;'>Invalid HTML code:</p><pre>" + data + "</pre>";
+                    }
+                })
+                .catch((error) => {
+                    validationResult.innerHTML = "<p style='color: red;'>Error occurred while validating code.</p>";
+                });
+        });
+    </script>
+</body>
+</html>
